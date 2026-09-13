@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/policy-engine" },
+    { "path": "packages/preflight" },
+    { "path": "packages/midnight" },
+    { "path": "packages/sponsor" },
+    { "path": "packages/privacy-limits" },
+    { "path": "packages/database" },
+    { "path": "packages/api" }
+  ]
+}

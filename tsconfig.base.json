@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "strict": true,
     "declaration": true,
+    "composite": true,
     "outDir": "dist",
     "rootDir": "src",
     "esModuleInterop": true,
