@@ -7,6 +7,5 @@ dist
 .gitignore
 *.md
 docs/
-packages/dashboard/
 docker-compose*.yml
-.dockerignore
+.github/
