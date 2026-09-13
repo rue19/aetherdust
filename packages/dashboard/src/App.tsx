@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
-import { api } from './api';
 import LoginPage from './pages/Login';
 import CampaignsPage from './pages/Campaigns';
 import CampaignDetailPage from './pages/CampaignDetail';
 import TransactionsPage from './pages/Transactions';
+import TransactionDetailPage from './pages/TransactionDetail';
 import ApiKeysPage from './pages/ApiKeys';
 import AuditLogPage from './pages/AuditLog';
 import HealthPage from './pages/Health';
+import ProjectsPage from './pages/Projects';
+import AdminUsersPage from './pages/AdminUsers';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -17,7 +18,9 @@ function Navbar() {
       <Link to="/" className="font-bold text-lg">AetherDust</Link>
       <Link to="/campaigns" className="hover:text-midnight-50">Campaigns</Link>
       <Link to="/transactions" className="hover:text-midnight-50">Transactions</Link>
+      <Link to="/projects" className="hover:text-midnight-50">Projects</Link>
       <Link to="/api-keys" className="hover:text-midnight-50">API Keys</Link>
+      <Link to="/admin-users" className="hover:text-midnight-50">Users</Link>
       <Link to="/audit-log" className="hover:text-midnight-50">Audit Log</Link>
       <Link to="/health" className="hover:text-midnight-50">Health</Link>
       <button onClick={logout} className="ml-auto text-sm bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</button>
@@ -39,7 +42,10 @@ export default function App() {
       <Route path="/campaigns" element={<ProtectedRoute><CampaignsPage /></ProtectedRoute>} />
       <Route path="/campaigns/:id" element={<ProtectedRoute><CampaignDetailPage /></ProtectedRoute>} />
       <Route path="/transactions" element={<ProtectedRoute><TransactionsPage /></ProtectedRoute>} />
+      <Route path="/transactions/:id" element={<ProtectedRoute><TransactionDetailPage /></ProtectedRoute>} />
+      <Route path="/projects" element={<ProtectedRoute><ProjectsPage /></ProtectedRoute>} />
       <Route path="/api-keys" element={<ProtectedRoute><ApiKeysPage /></ProtectedRoute>} />
+      <Route path="/admin-users" element={<ProtectedRoute><AdminUsersPage /></ProtectedRoute>} />
       <Route path="/audit-log" element={<ProtectedRoute><AuditLogPage /></ProtectedRoute>} />
       <Route path="/health" element={<ProtectedRoute><HealthPage /></ProtectedRoute>} />
     </Routes>

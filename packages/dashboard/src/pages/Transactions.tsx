@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../api';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -48,9 +49,12 @@ export default function TransactionsPage() {
                 <td className="px-4 py-3 text-sm font-mono">{tx.contractAddress ?? '-'}</td>
                 <td className="px-4 py-3 text-sm">{tx.entryPoint ?? '-'}</td>
                 <td className="px-4 py-3 text-sm">{new Date(tx.requestedAt).toLocaleString()}</td>
+                <td className="px-4 py-3">
+                  <Link to={`/transactions/${tx.id}`} className="text-midnight-500 hover:underline text-sm">Detail</Link>
+                </td>
               </tr>
             ))}
-            {txs.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No transactions found</td></tr>}
+            {txs.length === 0 && <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-400">No transactions found</td></tr>}
           </tbody>
         </table>
       </div>

@@ -16,6 +16,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 export interface AdminUser {
   id: string;
   email: string;
+  name: string | null;
   role: string;
 }
 
@@ -33,16 +34,30 @@ export const api = {
 
   overview: () => request<{ totalCampaigns: number; enabledCampaigns: number; totalDailySpeck: string }>('GET', `/v1/admin/overview?projectId=${getProjectId()}`),
 
+  // ── Projects ──
+  listProjects: () => request<{ projects: any[] }>('GET', `/v1/admin/projects`),
+  createProject: (name: string) => request<{ project: any }>('POST', '/v1/admin/projects', { name }),
+
+  // ── Campaigns ──
   listCampaigns: () =>
     request<{ campaigns: any[] }>('GET', `/v1/admin/campaigns?projectId=${getProjectId()}`),
 
   getCampaign: (id: string) => request<{ campaign: any }>('GET', `/v1/admin/campaigns/${id}`),
 
+  createCampaign: (data: Record<string, unknown>) =>
+    request<{ campaign: any }>('POST', '/v1/admin/campaigns', { ...data, projectId: getProjectId() }),
+
+  updateCampaign: (id: string, data: Record<string, unknown>) =>
+    request<{ campaign: any }>('PUT', `/v1/admin/campaigns/${id}`, data),
+
   toggleCampaign: (id: string) => request<{ campaign: any }>('PATCH', `/v1/admin/campaigns/${id}/toggle`),
+
+  deleteCampaign: (id: string) => request<void>('DELETE', `/v1/admin/campaigns/${id}`),
 
   campaignAnalytics: (id: string, days?: number) =>
     request<{ campaign: any; dailySpend: any[] }>('GET', `/v1/admin/campaigns/${id}/analytics?days=${days ?? 30}`),
 
+  // ── Transactions ──
   listTransactions: (params?: { campaignId?: string; status?: string; limit?: number }) => {
     const q = new URLSearchParams();
     if (params?.campaignId) q.set('campaignId', params.campaignId);
@@ -51,6 +66,9 @@ export const api = {
     return request<{ transactions: any[] }>('GET', `/v1/admin/transactions?${q}`);
   },
 
+  getTransaction: (id: string) => request<{ transaction: any }>('GET', `/v1/admin/transactions/${id}`),
+
+  // ── API Keys ──
   listApiKeys: () =>
     request<{ apiKeys: any[] }>('GET', `/v1/admin/api-keys?projectId=${getProjectId()}`),
 
@@ -59,6 +77,18 @@ export const api = {
 
   revokeApiKey: (id: string) => request<void>('DELETE', `/v1/admin/api-keys/${id}`),
 
+  // ── Admin Users ──
+  listAdminUsers: () => request<{ users: any[] }>('GET', '/v1/admin/users'),
+
+  createAdminUser: (data: { email: string; password: string; name?: string; role?: string }) =>
+    request<{ user: any }>('POST', '/v1/admin/users', data),
+
+  deleteAdminUser: (id: string) => request<void>('DELETE', `/v1/admin/users/${id}`),
+
+  // ── Audit Log ──
   auditLog: (limit?: number) =>
     request<{ entries: any[] }>('GET', `/v1/admin/audit-log?limit=${limit ?? 50}`),
+
+  // ── Wallet ──
+  walletBalance: () => request<{ balance: string; address: string | null; connected: boolean }>('GET', '/v1/admin/wallet/balance'),
 };

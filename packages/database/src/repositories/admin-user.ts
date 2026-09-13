@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { getDb } from '../client.js';
 import { adminUsers } from '../schema/index.js';
 import bcrypt from 'bcryptjs';
@@ -65,4 +65,16 @@ export async function getAdminUserById(id: string): Promise<AdminUserRecord | nu
   const rows = await db.select().from(adminUsers).where(eq(adminUsers.id, id)).limit(1);
   if (rows.length === 0) return null;
   return { id: rows[0].id, email: rows[0].email, name: rows[0].name, role: rows[0].role, createdAt: rows[0].createdAt, lastLoginAt: rows[0].lastLoginAt };
+}
+
+export async function listAdminUsers(): Promise<AdminUserRecord[]> {
+  const db = getDb();
+  const rows = await db.select().from(adminUsers).orderBy(desc(adminUsers.createdAt));
+  return rows.map(r => ({ id: r.id, email: r.email, name: r.name, role: r.role, createdAt: r.createdAt, lastLoginAt: r.lastLoginAt }));
+}
+
+export async function deleteAdminUser(id: string): Promise<boolean> {
+  const db = getDb();
+  const rows = await db.delete(adminUsers).where(eq(adminUsers.id, id)).returning();
+  return rows.length > 0;
 }

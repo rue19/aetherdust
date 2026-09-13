@@ -32,6 +32,8 @@ export async function buildFullServer(deps: AppDeps) {
     bodyLimit: 1024 * 1024,
   });
 
+  (app as any).sponsorWallet = deps.sponsorWallet;
+
   await registerCors(app);
   await app.register(metricsPlugin);
 
