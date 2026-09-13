@@ -48,7 +48,7 @@ export async function buildFullServer(deps: AppDeps) {
   }));
 
   app.post<{ Body: RawSponsorPayload }>('/v1/sponsor', { onRequest: [requireApiKey, requireScope('sponsor')] }, async (req, reply) => {
-    const payload = req.body;
+    const payload = req.body as RawSponsorPayload;
 
     const campaign = payload.campaignId ? await deps.getCampaign(payload.campaignId) : null;
     if (!campaign) {

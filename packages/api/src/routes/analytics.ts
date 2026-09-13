@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { getCampaignById, getDailySpend } from '@aetherdust/database';
+import type { Campaign } from '@aetherdust/policy-engine';
 import { requireApiKey, requireScope } from '../middleware/auth.js';
 
 export async function analyticsRoutes(app: FastifyInstance): Promise<void> {
@@ -17,7 +18,7 @@ export async function analyticsRoutes(app: FastifyInstance): Promise<void> {
     }
     return reply.send({
       totalCampaigns: campaigns.length,
-      enabledCampaigns: campaigns.filter(c => c.enabled).length,
+      enabledCampaigns: campaigns.filter((c: Campaign) => c.enabled).length,
       totalDailySpeck: totalDailySpend.toString(),
     });
   });

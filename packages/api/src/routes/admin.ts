@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { createApiKey, listApiKeys, revokeApiKey, writeAuditLog, listCampaigns, getCampaignById, updateCampaign, listTransactions, getDailySpend } from '@aetherdust/database';
+import type { Campaign } from '@aetherdust/policy-engine';
 import { requireAdminAuth, requireAdminRole, signAdminToken } from '../middleware/admin-auth.js';
 import { verifyAdminUser } from '@aetherdust/database';
 
@@ -136,7 +137,7 @@ export async function adminRoutes(app: FastifyInstance): Promise<void> {
     }
     return reply.send({
       totalCampaigns: campaigns.length,
-      enabledCampaigns: campaigns.filter(c => c.enabled).length,
+      enabledCampaigns: campaigns.filter((c: Campaign) => c.enabled).length,
       totalDailySpeck: totalDailySpend.toString(),
     });
   });
