@@ -7,12 +7,16 @@ COPY packages/policy-engine/package.json packages/policy-engine/
 COPY packages/preflight/package.json packages/preflight/
 COPY packages/midnight/package.json packages/midnight/
 COPY packages/sponsor/package.json packages/sponsor/
+COPY packages/privacy-limits/package.json packages/privacy-limits/
 COPY packages/database/package.json packages/database/
 COPY packages/api/package.json packages/api/
+COPY packages/dashboard/package.json packages/dashboard/
+COPY packages/demo-dapp/package.json packages/demo-dapp/
 
 RUN npm ci --ignore-scripts
 
 COPY tsconfig.base.json ./
+COPY tsconfig.json ./
 COPY packages/policy-engine/tsconfig.json packages/policy-engine/
 COPY packages/policy-engine/src packages/policy-engine/src
 COPY packages/preflight/tsconfig.json packages/preflight/
@@ -21,6 +25,8 @@ COPY packages/midnight/tsconfig.json packages/midnight/
 COPY packages/midnight/src packages/midnight/src
 COPY packages/sponsor/tsconfig.json packages/sponsor/
 COPY packages/sponsor/src packages/sponsor/src
+COPY packages/privacy-limits/tsconfig.json packages/privacy-limits/
+COPY packages/privacy-limits/src packages/privacy-limits/src
 COPY packages/database/tsconfig.json packages/database/
 COPY packages/database/src packages/database/src
 COPY packages/api/tsconfig.json packages/api/
@@ -38,8 +44,11 @@ COPY packages/policy-engine/package.json packages/policy-engine/
 COPY packages/preflight/package.json packages/preflight/
 COPY packages/midnight/package.json packages/midnight/
 COPY packages/sponsor/package.json packages/sponsor/
+COPY packages/privacy-limits/package.json packages/privacy-limits/
 COPY packages/database/package.json packages/database/
 COPY packages/api/package.json packages/api/
+COPY packages/dashboard/package.json packages/dashboard/
+COPY packages/demo-dapp/package.json packages/demo-dapp/
 
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
@@ -47,6 +56,7 @@ COPY --from=builder /app/packages/policy-engine/dist packages/policy-engine/dist
 COPY --from=builder /app/packages/preflight/dist packages/preflight/dist
 COPY --from=builder /app/packages/midnight/dist packages/midnight/dist
 COPY --from=builder /app/packages/sponsor/dist packages/sponsor/dist
+COPY --from=builder /app/packages/privacy-limits/dist packages/privacy-limits/dist
 COPY --from=builder /app/packages/database/dist packages/database/dist
 COPY --from=builder /app/packages/api/dist packages/api/dist
 
