@@ -1,0 +1,21 @@
+{
+  "name": "aetherdust",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Open-source, self-hostable DUST sponsorship infrastructure for Midnight DApps",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @aetherdust/policy-engine && npm run build -w @aetherdust/preflight && npm run build -w @aetherdust/midnight && npm run build -w @aetherdust/sponsor && npm run build -w @aetherdust/database && npm run build -w @aetherdust/api",
+    "dev": "npm run dev -w @aetherdust/api",
+    "start": "npm run dev -w @aetherdust/api",
+    "test": "npm test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "Apache-2.0"
+}

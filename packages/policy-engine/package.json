@@ -1,0 +1,16 @@
+{
+  "name": "@aetherdust/policy-engine",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Campaign policy evaluation: budgets, per-user limits, allowlists, expiration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

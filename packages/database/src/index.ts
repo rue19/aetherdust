@@ -1,0 +1,13 @@
+export { getDb, getPool, closePool, schema } from './client.js';
+export * from './repositories/campaign.js';
+export * from './repositories/usage-ledger.js';
+export * from './repositories/transaction.js';
+export * from './repositories/api-key.js';
+export * from './repositories/audit-log.js';
+export * from './repositories/admin-user.js';
+export * from './repositories/project.js';
+export type { TransactionRecord } from './repositories/transaction.js';
+export type { ApiKeyRecord } from './repositories/api-key.js';
+export type { AuditLogEntry } from './repositories/audit-log.js';
+export type { AdminUserRecord } from './repositories/admin-user.js';
+export type { ProjectRecord } from './repositories/project.js';

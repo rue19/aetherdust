@@ -1,0 +1,19 @@
+{
+  "name": "@aetherdust/preflight",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Checks run before spending sponsor DUST: structure, policy, budget, circuit breaker",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aetherdust/policy-engine": "^0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

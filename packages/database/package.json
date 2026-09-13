@@ -1,0 +1,28 @@
+{
+  "name": "@aetherdust/database",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Postgres schema, migrations, and repositories for AetherDust",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:seed": "node dist/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "drizzle-orm": "^0.35.0",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/pg": "^8.11.0",
+    "drizzle-kit": "^0.26.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

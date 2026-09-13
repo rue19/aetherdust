@@ -1,0 +1,31 @@
+{
+  "name": "@aetherdust/api",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AetherDust sponsorship API — POST /v1/sponsor and campaign management",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aetherdust/database": "^0.1.0",
+    "@aetherdust/midnight": "^0.1.0",
+    "@aetherdust/policy-engine": "^0.1.0",
+    "@aetherdust/preflight": "^0.1.0",
+    "@aetherdust/sponsor": "^0.1.0",
+    "@fastify/cors": "^10.0.0",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "pino": "^10.3.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
