@@ -9,8 +9,9 @@ const logger = pino({ level: 'warn' });
 const USER_SEED = '1111111111111111111111111111111111111111111111111111111111111111';
 const SPONSOR_SEED = '2222222222222222222222222222222222222222222222222222222222222222';
 
-// Skip if Docker is not available or Midnight devnet cannot start
-const describeE2E = process.env.CI ? describe : describe.skip;
+// Skip unless explicitly opted in via RUN_E2E=true
+// Requires Docker + Midnight devnet containers (compose.yml)
+const describeE2E = process.env.RUN_E2E === 'true' ? describe : describe.skip;
 
 describeE2E('DUST sponsorship e2e on devnet', () => {
   let testEnv: ReturnType<typeof getTestEnvironment>;
