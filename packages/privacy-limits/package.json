@@ -1,0 +1,22 @@
+{
+  "name": "@aetherdust/privacy-limits",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Nullifier-based privacy limits for DUST sponsorship using Compact/ZK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aetherdust/midnight": "^0.1.0",
+    "@midnight-ntwrk/midnight-js-protocol": "^4.1.1",
+    "@midnight-ntwrk/midnight-js-utils": "^4.1.1",
+    "pino": "^10.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

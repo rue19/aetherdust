@@ -98,11 +98,16 @@ export async function buildFullServer(deps: AppDeps) {
       await deps.recordUsage(campaign.id, payload.usageId!, payload.estimatedFeeSpeck ?? 0n, 'sponsored');
       return reply.code(200).send({ status: 'approved', transaction: txId, sponsorship: { dust: (payload.estimatedFeeSpeck ?? 0n).toString() } });
     } catch (err) {
-      deps.logger.debug({ err }, 'sponsorship submission failed — falling back to mock tx');
-      const mockTxId = `mock-tx-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-      await updateTransaction(txRecord.id, { status: 'sponsored', txHash: mockTxId });
-      await deps.recordUsage(campaign.id, payload.usageId!, payload.estimatedFeeSpeck ?? 0n, 'sponsored');
-      return reply.code(200).send({ status: 'approved', transaction: mockTxId, sponsorship: { dust: (payload.estimatedFeeSpeck ?? 0n).toString() }, mock: true });
+      deps.logger.error({ err }, 'sponsorship submission failed');
+      if (process.env.NODE_ENV === 'development') {
+        deps.logger.warn('Falling back to mock tx in development mode');
+        const mockTxId = `mock-tx-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+        await updateTransaction(txRecord.id, { status: 'sponsored', txHash: mockTxId });
+        await deps.recordUsage(campaign.id, payload.usageId!, payload.estimatedFeeSpeck ?? 0n, 'sponsored');
+        return reply.code(200).send({ status: 'approved', transaction: mockTxId, sponsorship: { dust: (payload.estimatedFeeSpeck ?? 0n).toString() }, mock: true });
+      }
+      await updateTransaction(txRecord.id, { status: 'failed', rejectionReason: 'SUBMISSION_FAILED' });
+      return reply.code(500).send({ status: 'error', reason: 'SUBMISSION_FAILED', detail: err instanceof Error ? err.message : 'unknown error' });
     }
   });
 

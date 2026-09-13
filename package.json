@@ -8,10 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @aetherdust/policy-engine && npm run build -w @aetherdust/preflight && npm run build -w @aetherdust/midnight && npm run build -w @aetherdust/sponsor && npm run build -w @aetherdust/database && npm run build -w @aetherdust/api",
+    "build": "npm run build -w @aetherdust/policy-engine && npm run build -w @aetherdust/preflight && npm run build -w @aetherdust/midnight && npm run build -w @aetherdust/sponsor && npm run build -w @aetherdust/privacy-limits && npm run build -w @aetherdust/database && npm run build -w @aetherdust/api",
+    "build:demo": "npm run build --workspace=@aetherdust/demo-dapp",
     "dev": "npm run dev -w @aetherdust/api",
+    "dev:demo": "npm run dev --workspace=@aetherdust/demo-dapp",
     "start": "npm run dev -w @aetherdust/api",
     "test": "npm test --workspaces --if-present",
+    "test:coverage": "npx vitest run --coverage",
     "lint": "npm run lint --workspaces --if-present"
   },
   "engines": {

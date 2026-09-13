@@ -1,0 +1,20 @@
+// AetherDust Demo Counter Contract
+// The simplest possible DApp demonstrating gasless transactions on Midnight.
+// A user increments a counter (zero DUST), AetherDust sponsor pays the fee.
+
+pragma language_version 0.16;
+import CompactStandardLibrary;
+
+export ledger counter: Counter;
+
+constructor() {
+    // counter starts at 0 (default)
+}
+
+export circuit increment(): [] {
+    counter.increment(1);
+}
+
+export circuit get(): Uint<64> {
+    return counter.read();
+}

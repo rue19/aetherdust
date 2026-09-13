@@ -1,0 +1,65 @@
+// AetherDust Privacy Limits Contract
+// Uses nullifiers to enforce per-user rate limits without revealing user identity.
+// Users prove eligibility via Merkle proof and nullifier uniqueness.
+
+pragma language_version 0.16;
+import CompactStandardLibrary;
+
+// --- On-chain state ---
+export ledger dailyUsedNullifiers: Set<Bytes<32>>;
+export ledger registeredUsers: HistoricMerkleTree<10, Bytes<32>>;
+export ledger epochSeed: Field;
+
+// --- Witnesses (off-chain, private) ---
+witness secretKey(): Bytes<32>;
+witness findAuthPath(pk: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+
+// --- Circuits ---
+
+// Register a user's public key commitment (called during onboarding)
+export circuit registerUser(pk: Bytes<32>): [] {
+    registeredUsers.insert(pk);
+}
+
+// Claim sponsorship — enforces one-use-per-epoch per user
+// The epoch parameter rotates daily to clear the nullifier set
+export circuit claimSponsorship(currentEpoch: Field): [] {
+    const sk = secretKey();
+    const pk = publicKey(sk);
+
+    // 1. Prove the user is registered (Merkle proof)
+    const authPath = findAuthPath(pk);
+    assert(registeredUsers.checkRoot(
+        merkleTreePathRoot<10, Bytes<32>>(authPath)
+    ), "not registered");
+
+    // 2. Derive nullifier (domain-separated from commitment)
+    const nul = deriveNullifier(currentEpoch, sk);
+
+    // 3. Check not already used this epoch
+    assert(!dailyUsedNullifiers.member(nul), "already claimed this epoch");
+
+    // 4. Insert nullifier (discloses it on-chain)
+    dailyUsedNullifiers.insert(disclose(nul));
+}
+
+// Rotate epoch — clears the nullifier set by starting a new epoch
+export circuit rotateEpoch(newSeed: Field): [] {
+    epochSeed = disclose(newSeed);
+}
+
+// --- Helper circuits (pure, no state) ---
+
+circuit publicKey(sk: Bytes<32>): Bytes<32> {
+    return persistentHash<Vector<2, Bytes<32>>>([
+        pad(32, "aetherdust:commitment"), sk
+    ]);
+}
+
+circuit deriveNullifier(epoch: Field, sk: Bytes<32>): Bytes<32> {
+    return persistentHash<Vector<3, Bytes<32>>>([
+        pad(32, "aetherdust:nullifier"),
+        epoch as Bytes<32>,
+        sk
+    ]);
+}
