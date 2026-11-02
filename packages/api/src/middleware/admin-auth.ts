@@ -8,6 +8,7 @@ export function signAdminToken(payload: { id: string; email: string; role: strin
 }
 
 export async function requireAdminAuth(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  if (request.url === '/v1/admin/login' || request.url.startsWith('/health')) return;
   const authHeader = request.headers.authorization;
   if (!authHeader?.startsWith('Bearer ')) {
     return reply.code(401).send({ error: 'MISSING_TOKEN', message: 'Authorization header must be: Bearer <jwt_token>' });
